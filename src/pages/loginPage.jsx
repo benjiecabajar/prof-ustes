@@ -44,39 +44,25 @@ export default function LoginPage() {
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="studentId" className="form-label">Student ID / Username</label>
-            <div className="input-wrapper">
-              <span className="input-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </span>
-              <input
-                id="studentId"
-                type="text"
-                className="form-input"
-                placeholder="Enter your student ID or username"
-                value={studentId}
-                onChange={(e) => setStudentId(e.target.value)}
-                autoComplete="username"
-              />
-            </div>
+            <input
+              placeholder="Enter your student ID or username"
+              id="studentId"
+              type="text"
+              className="form-input"
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              autoComplete="username"
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="password" className="form-label">Password</label>
             <div className="input-wrapper">
-              <span className="input-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-              </span>
               <input
+                placeholder="Enter your password"
                 id="password"
                 type={showPassword ? "text" : "password"}
                 className="form-input"
-                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
@@ -120,7 +106,12 @@ export default function LoginPage() {
               </span>
               <span className="remember-text">Remember me</span>
             </label>
-            <a href="#" className="forgot-link">Forgot password?</a>
+            <a href="#" className="forgot-link" onClick={(e) => {
+              e.preventDefault();
+              navigate("/forgot-password");
+            }}>
+              Forgot password?
+            </a>
           </div>
 
           <button type="submit" className="login-btn">
@@ -130,7 +121,12 @@ export default function LoginPage() {
 
         <p className="login-signup">
           Don't have an account?{" "}
-          <a href="#" className="signup-link">Create one</a>
+          <a href="#" className="signup-link" onClick={(e) => {
+            e.preventDefault();
+            navigate("/signup");
+          }}>
+            Create one
+          </a>
         </p>
       </div>
     </div>

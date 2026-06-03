@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import './index.css';
 
 /* ==================== RESET & BASE ==================== */
 
@@ -6,33 +7,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-:root {
-  --navy:        #1A1850;
-  --navy-mid:    #1A1850;
-  --navy-light:  #1A1850;
-  --gold:        #FBBD08;
-  --gold-light:  #FBBD08;
-  --gold-pale:   rgba(212, 160, 23, 0.12);
-  --gold-border: rgba(212, 160, 23, 0.3);
-  --white:       #ffffff;
-  --off-white:   #f8f7f4;
-  --surface:     #f2f1ee;
-  --text-dark:   #111827;
-  --text-mid:    #374151;
-  --text-muted:  #6b7280;
-  --text-faint:  #9ca3af;
-  --border:      rgba(0,0,0,0.08);
-  --shadow-sm:   0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
-  --shadow-md:   0 4px 12px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.1);
-  --shadow-lg:   0 8px 24px rgba(0,0,0,0.1), 0 24px 64px rgba(0,0,0,0.12);
-  --radius-sm:   8px;
-  --radius-md:   14px;
-  --radius-lg:   20px;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
-  --transition:   0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -102,9 +76,6 @@ a {
   content: '';
   position: absolute;
   bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
   background: var(--gold);
   border-radius: 2px;
   transition: width var(--transition);
@@ -158,11 +129,12 @@ a {
   border: none;
   font-family: var(--font-body);
   color: var(--white);
-  padding: 10px 22px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
+  
   letter-spacing: 0.2px;
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
@@ -300,7 +272,22 @@ a {
 .services-section {
   padding: 110px 80px;
   background: var(--white);
+  scroll-margin-top: 50px; /* Offset for sticky navbar height */
 }
+
+/* Scroll Reveal Core Classes */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 .section-label {
   display: block;
@@ -350,16 +337,19 @@ a {
   border: 1px solid var(--border);
   transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
   cursor: pointer;
-  animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.service-card:nth-child(1) { animation-delay: 0.1s; }
-.service-card:nth-child(2) { animation-delay: 0.15s; }
-.service-card:nth-child(3) { animation-delay: 0.2s; }
-.service-card:nth-child(4) { animation-delay: 0.25s; }
-.service-card:nth-child(5) { animation-delay: 0.3s; }
-.service-card:nth-child(6) { animation-delay: 0.35s; }
-.service-card:nth-child(7) { animation-delay: 0.4s; }
+.scroll-reveal.revealed .service-card {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.scroll-reveal.revealed .service-card:nth-child(1) { animation-delay: 0.1s; }
+.scroll-reveal.revealed .service-card:nth-child(2) { animation-delay: 0.2s; }
+.scroll-reveal.revealed .service-card:nth-child(3) { animation-delay: 0.3s; }
+.scroll-reveal.revealed .service-card:nth-child(4) { animation-delay: 0.4s; }
+.scroll-reveal.revealed .service-card:nth-child(5) { animation-delay: 0.5s; }
+.scroll-reveal.revealed .service-card:nth-child(6) { animation-delay: 0.6s; }
+.scroll-reveal.revealed .service-card:nth-child(7) { animation-delay: 0.7s; }
 
 .service-card:hover {
   transform: translateY(-6px);
@@ -414,6 +404,7 @@ a {
 .updates-section {
   padding: 110px 100px;
   background: var(--off-white);
+  scroll-margin-top: 50px;
 }
 
 .updates-header {
@@ -471,7 +462,10 @@ a {
   overflow: hidden;
   border: 1px solid var(--border);
   transition: transform var(--transition), box-shadow var(--transition);
-  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.scroll-reveal.revealed .news-card {
+  animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .news-card:hover {
@@ -529,8 +523,11 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: 0.2s;
+}
+
+.scroll-reveal.revealed .contribute-card {
+  animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 0.3s;
 }
 
 .contribute-card h3 {
@@ -575,6 +572,7 @@ a {
 .faq-section {
   padding: 110px 20px;
   background: var(--white);
+  scroll-margin-top: 50px;
 }
 
 .faq-section h2 {

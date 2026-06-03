@@ -1,0 +1,28 @@
+/* ==================== VARIABLES ==================== */
+
+:root {
+  --navy:        #0f1d3a;
+  --navy-mid:    #182a5a;
+  --navy-light:  #1e3570;
+  --gold:        #d4a017;
+  --gold-light:  #f0c040;
+  --gold-pale:   rgba(212, 160, 23, 0.12);
+  --gold-border: rgba(212, 160, 23, 0.3);
+  --white:       #ffffff;
+  --off-white:   #f8f7f4;
+  --surface:     #f2f1ee;
+  --text-dark:   #111827;
+  --text-mid:    #374151;
+  --text-muted:  #6b7280;
+  --text-faint:  #9ca3af;
+  --border:      rgba(0, 0, 0, 0.09);
+  --success:     #16a34a;
+  --error:       #dc2626;
+  --shadow-md:   0 8px 32px rgba(0,0,0,0.14), 0 32px 80px rgba(0,0,0,0.18);
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   16px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}

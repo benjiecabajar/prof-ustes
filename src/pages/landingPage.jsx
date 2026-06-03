@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/landingPage.css";
 import {
@@ -60,8 +60,33 @@ const faqs = [
 export default function LandingPage() {
   const [open, setOpen] = useState(null);
   const [expandedServices, setExpandedServices] = useState([]);
+  const servicesRef = useRef(null);
 
   // Toggles individual service expansion state
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.05,
+      rootMargin: "0px 0px -10% 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+    revealElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToServices = () => {
+    servicesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const toggleService = (index) => {
     setExpandedServices(prev =>
       prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
@@ -80,7 +105,9 @@ export default function LandingPage() {
           <button className="login-btn" onClick={() => navigate("/login")}>Login
           </button>
 
-          <button className="signup-btn">Sign Up</button>
+          <button className="signup-btn" onClick={() => navigate("/signup")}>
+            Sign Up
+          </button>
         </div>
       </nav>
 
@@ -107,14 +134,16 @@ export default function LandingPage() {
           </p>
 
           <div className="hero-buttons">
-            <button className=" primary-btn" onClick={() => navigate("/login")}>Get Started</button>
-            <button className="secondary-btn">Explore Services</button>
+            <button className="primary-btn" onClick={() => navigate("/login")}>Get Started</button>
+            <button className="secondary-btn" onClick={scrollToServices}>
+              Explore Services
+            </button>
           </div>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section className="services-section">
+      <section className="services-section scroll-reveal" ref={servicesRef}>
         <h2>Services</h2>
 
         <div className="services-grid">
@@ -138,7 +167,7 @@ export default function LandingPage() {
       </section>
 
       {/* UPDATES */}
-      <section className="updates-section">
+      <section className="updates-section scroll-reveal">
         <div className="updates-header">
           <div>
             <h2>Campus Buzz & Updates</h2>
@@ -198,7 +227,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="faq-section">
+      <section className="faq-section scroll-reveal">
         <h2>Frequently Asked Questions</h2>
 
         <div className="faq-container">
