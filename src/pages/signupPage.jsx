@@ -21,6 +21,13 @@ export default function SignupPage() {
   const [showErrors, setShowErrors]     = useState(false);
   const [isUsernameManual, setIsUsernameManual] = useState(false);
   const [step, setStep]                 = useState(1); // 1 = personal, 2 = security (mobile)
+  const [isMobile, setIsMobile]         = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const [form, setForm] = useState({
     firstName: "", lastName: "", mi: "",
@@ -87,6 +94,18 @@ export default function SignupPage() {
   const gClass = (field) => `form-group ${isFieldInvalid(field) ? "error" : ""}`;
   const handleSignup = () => isFormValid ? console.log("Signup successful", form) : setShowErrors(true);
 
+  const step1Fields = ["firstName", "lastName", "dob", "gender", "contact", "address", "studentId", "course", "yearLevel"];
+  const isStep1Valid = step1Fields.every(f => form[f].trim() !== "") && isContactValid && isStudentIdValid && isDobValid;
+
+  const handleNextStep = () => {
+    if (isStep1Valid) {
+      setStep(2);
+      setShowErrors(false);
+    } else {
+      setShowErrors(true);
+    }
+  };
+
   return (
     <div className="signup-page">
       <div className="signup-bg"><div className="signup-bg-overlay"/></div>
@@ -125,7 +144,7 @@ export default function SignupPage() {
         <div className="signup-body">
 
           {/* ── LEFT: Personal Information ── */}
-          <div className={`signup-col ${step === 1 ? "active" : ""}`}>
+          <div className={`signup-col ${!isMobile || step === 1 ? "active" : ""}`}>
             <div className="col-label">
               <span className="col-step">01</span>
               Personal Information
@@ -230,13 +249,19 @@ export default function SignupPage() {
                 </select>
               </div>
             </div>
+
+            {isMobile && (
+              <button type="button" className="signup-btn mobile-nav-btn" onClick={handleNextStep}>
+                Next Step
+              </button>
+            )}
           </div>
 
           {/* Divider (desktop) */}
           <div className="col-separator" />
 
           {/* ── RIGHT: Account Security ── */}
-          <div className={`signup-col ${step === 2 ? "active" : ""}`}>
+          <div className={`signup-col ${!isMobile || step === 2 ? "active" : ""}`}>
             <div className="col-label">
               <span className="col-step">02</span>
               Account Security
@@ -336,16 +361,15 @@ export default function SignupPage() {
               </span>
             </label>
 
-            <button className="signup-btn" onClick={handleSignup}>
-              Create Account
-            </button>
+            <div className="signup-actions">
+              {isMobile && (
+                <button type="button" className="back-btn mobile-nav-btn" onClick={() => setStep(1)}>Back</button>
+              )}
+              <button className="signup-btn" onClick={handleSignup}>
+                Create Account
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* Mobile step nav */}
-        <div className="mobile-steps">
-          <button className={`step-pill ${step === 1 ? "active" : ""}`} onClick={() => setStep(1)}>Personal Info</button>
-          <button className={`step-pill ${step === 2 ? "active" : ""}`} onClick={() => setStep(2)}>Account Security</button>
         </div>
 
         <p className="signup-login">Already have an account? <a href="#" className="login-link" onClick={(e) => {

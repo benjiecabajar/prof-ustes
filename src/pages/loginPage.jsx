@@ -11,7 +11,8 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // handle login logic
+    // handle login logic and redirect to student portal
+    navigate("/home");
   };
 
   return (

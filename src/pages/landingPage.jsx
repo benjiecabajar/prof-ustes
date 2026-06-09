@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../styles/landingPage.css";
 import {
   FaIdCard,
@@ -221,7 +221,7 @@ export default function LandingPage() {
               campus leaders to join our editorial team.
             </p>
 
-            <button>Apply Now</button>
+            <button onClick={() => navigate("/login")}>Apply Now</button>
           </div>
         </div>
       </section>

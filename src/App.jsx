@@ -5,6 +5,7 @@ import LandingPage from './pages/landingPage';
 import LoginPage from './pages/loginPage' ;
 import SignupPage from './pages/signupPage';
 import ForgotPassword from './pages/forgotPassword';  
+import StudentHome from './pages/studentHome';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/home" element={<StudentHome />} />
       </Routes>
     </Router>
   );
