@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import LandingPage from './pages/landingPage';
 import LoginPage from './pages/loginPage' ;
 import SignupPage from './pages/signupPage';
 import ForgotPassword from './pages/forgotPassword';  
-import StudentHome from './pages/studentHome';
+import StudentHome from './pages/studentUser/studentHome';
+import Navbar from './components/navbar';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -19,6 +20,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />

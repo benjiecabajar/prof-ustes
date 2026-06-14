@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/studentHome.css";
-import tesdaImage from "../assets/tesda_partnership.png";
+import "../../styles/studentHome.css";
+import tesdaImage from "../../assets/tesda_partnership.png";
 import {
   FaHome,
   FaBriefcase,
@@ -20,9 +20,116 @@ import {
   FaEllipsisH,
   FaUserCircle,
   FaBars,
+  FaLink,
   FaTimes,
-  FaCalendarAlt
+  FaCalendarAlt,
+  FaGlobe,
+  FaBookOpen,
+  FaMap,
+  FaFacebook,
+  FaExternalLinkAlt,
+  FaBook,
+  FaGraduationCap,
+  FaFile,
+  FaIdCard,
+  FaHandshake,
+  FaUserTie,
+  FaUsers,
+  FaTheaterMasks,
+  FaShieldAlt,
+  FaRunning
 } from "react-icons/fa";
+
+const portalServices = [
+  {
+    title: "Admission & Enrollment",
+    desc: "Streamline your enrollment process. Submit requirements and track your application status.",
+    icon: <FaIdCard />,
+    status: "Open"
+  },
+  {
+    title: "Scholarship & Grants",
+    desc: "Explore financial aid opportunities. Apply for scholarships and manage your active grants.",
+    icon: <FaHandshake />,
+    status: "Ongoing"
+  },
+  {
+    title: "Guidance & Counseling",
+    desc: "Access professional support for personal growth. Schedule wellness sessions with counselors.",
+    icon: <FaUserTie />,
+    status: "Available"
+  },
+  {
+    title: "Student Organizations",
+    desc: "Engage with campus life. Register organizations, manage events, and foster leadership.",
+    icon: <FaUsers />,
+    status: "Active"
+  },
+  {
+    title: "Culture & Arts",
+    desc: "Join cultural groups, stay updated on arts events, and participate in creative initiatives.",
+    icon: <FaTheaterMasks />,
+    status: "Active"
+  },
+  {
+    title: "Safety & Security",
+    desc: "Ensuring a safe environment. Request assistance and access emergency services.",
+    icon: <FaShieldAlt />,
+    status: "24/7"
+  },
+  {
+    title: "Sports Development",
+    desc: "Join varsity teams, register for sports events, and access athletic facilities.",
+    icon: <FaRunning />,
+    status: "Seasonal"
+  }
+];
+
+const quickLinks = [
+
+  {
+    title: "Prisms",
+    desc: "Check your official grades, and enrollment status through the USTP PRISMS.",
+    url: "https://prisms.ustp.edu.ph/auth/login",
+    icon: <FaBookOpen />,
+    category: "Academic"
+  },
+  {
+    title: "USTP eClearance",
+    desc: "Check your clearance status and pending requirements for graduation or enrollment holds.",
+    url: "https://clearance.ustp.edu.ph/",
+    icon: <FaFile />,
+    category: "Academic"
+  },
+  {
+    title: "Academic Calendar",
+    desc: "Stay updated with semester schedules, holidays, and important university deadlines.",
+    url: "https://www.ustp.edu.ph/university-calendars/",
+    icon: <FaCalendarAlt />,
+    category: "Academic"
+  },
+  {
+    title: "Student Handbook",
+    desc: "Read the official guidelines and policies for students at USTP.",
+    url: "https://www.ustp.edu.ph/wp-content/uploads/2021/03/STUDENT-HANDBOOK-2021-EDITION.pdf",
+    icon: <FaGraduationCap />,
+    category: "General"
+  },
+  {
+    title: "Campus Map",
+    desc: "Navigate the Villanueva Campus facilities and administrative offices.",
+    url: "#",
+    icon: <FaMap />,
+    category: "General"
+  },
+  {
+    title: "Official Facebook Page",
+    desc: "Follow the campus community and get real-time news updates.",
+    url: "https://www.facebook.com/ustpvillanueva/",
+    icon: <FaFacebook />,
+    category: "Social"
+  }
+];
 
 export default function StudentHome() {
   const navigate = useNavigate();
@@ -43,6 +150,20 @@ export default function StudentHome() {
   ]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
+  // Request Notification Permission on Mount (Post-Login)
+  useEffect(() => {
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification("USTeS Student Portal", {
+            body: "Welcome back! Notifications are now enabled.",
+            icon: "/logo192.png"
+          });
+        }
+      });
+    }
+  }, []);
 
   // Calendar State
   const [currentDate, setCurrentDate] = useState(new Date(2026, 4, 19)); // May 19, 2026
@@ -187,11 +308,11 @@ export default function StudentHome() {
             <span>Communications</span>
           </button>
           <button
-            className={`nav-item ${activeTab === "Settings" ? "active" : ""}`}
-            onClick={() => { setActiveTab("Settings"); setIsSidebarOpen(false); }}
+            className={`nav-item ${activeTab === "Quick Links" ? "active" : ""}`}
+            onClick={() => { setActiveTab("Quick Links"); setIsSidebarOpen(false); }}
           >
-            <FaCog className="nav-icon" />
-            <span>Settings</span>
+            <FaLink className="nav-icon" />
+            <span>Quick Links</span>
           </button>
         </nav>
 
@@ -213,10 +334,6 @@ export default function StudentHome() {
             </label>
           </div>
 
-          <button className="logout-btn" onClick={handleLogout}>
-            <FaSignOutAlt className="logout-icon" />
-            <span>Logout</span>
-          </button>
         </div>
       </aside>
 
@@ -253,7 +370,6 @@ export default function StudentHome() {
             >
               <FaCalendarAlt />
             </button>
-            
           </div>
 
           <div className="header-actions">
@@ -434,7 +550,57 @@ export default function StudentHome() {
               </>
             )}
 
-            {activeTab !== "Home" && activeTab !== "Profile" && (
+            {activeTab === "Services" && (
+              <div className="services-portal-section">
+                <div className="services-portal-header">
+                  <h2>Student Services</h2>
+                  <p>Access and manage your student affairs and university service requests.</p>
+                </div>
+                
+                <div className="services-portal-grid">
+                  {portalServices.map((service, idx) => (
+                    <div key={idx} className="service-portal-card">
+                      <div className="service-status-badge">{service.status}</div>
+                      <div className="service-icon-wrapper">
+                        {service.icon}
+                      </div>
+                      <div className="service-card-info">
+                        <h3>{service.title}</h3>
+                        <p>{service.desc}</p>
+                      </div>
+                      <button className="service-action-btn">
+                        Request Service
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === "Quick Links" && (
+              <div className="quick-links-section">
+                <div className="quick-links-header">
+                  <h2>Quick Links</h2>
+                  <p>Fast access to essential university services and academic resources.</p>
+                </div>
+                
+                <div className="quick-links-grid">
+                  {quickLinks.map((link, idx) => (
+                    <a key={idx} href={link.url} target="_blank" rel="noopener noreferrer" className="quick-link-card">
+                      <div className="ql-external-icon"><FaExternalLinkAlt /></div>
+                      <span className="ql-category">{link.category}</span>
+                      <div className="ql-icon-box">{link.icon}</div>
+                      <div className="ql-info">
+                        <h3>{link.title}</h3>
+                        <p>{link.desc}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab !== "Home" && activeTab !== "Profile" && activeTab !== "Quick Links" && activeTab !== "Services" && (
               <div className="placeholder-view">
                 <h2>{activeTab}</h2>
                 <p>Welcome to the {activeTab} section of the USTeS student portal. This service is fully functional and ready for student interactions.</p>

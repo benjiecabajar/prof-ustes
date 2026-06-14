@@ -7,6 +7,13 @@
   color: var(--text-dark);
   font-family: var(--font-body);
   transition: background-color 0.3s ease, color 0.3s ease;
+  /* Hide scrollbar for the portal view */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.portal-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 /* Dark Theme overrides */
@@ -46,9 +53,10 @@
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.5px;
-  margin-bottom: 32px;
+  margin-bottom: 0;
   cursor: pointer;
-  padding-left: 12px;
+  text-align: center;
+  width: 100%;
 }
 
 .sidebar-logo .logo-accent {
@@ -69,8 +77,8 @@
   background: transparent;
   border: none;
   font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 14.5px;
+  font-weight: 300px;
   color: var(--text-mid);
   padding: 12px 16px;
   border-radius: var(--radius-sm);
@@ -112,7 +120,7 @@
 }
 
 .theme-label {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: 0.5px;
@@ -175,7 +183,7 @@ input:checked + .switch-slider:before {
   border-radius: var(--radius-sm);
   padding: 12px;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
@@ -223,7 +231,7 @@ input:checked + .switch-slider:before {
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .search-input {
@@ -233,7 +241,7 @@ input:checked + .switch-slider:before {
   border-radius: 30px;
   padding: 10px 16px 10px 44px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-dark);
   transition: all 0.2s ease;
 }
@@ -311,7 +319,7 @@ input:checked + .switch-slider:before {
 
 .dropdown-header h4 {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -466,7 +474,7 @@ input:checked + .switch-slider:before {
   border: none;
   padding: 10px 16px;
   font-family: var(--font-body);
-  font-size: 13.5px;
+  font-size: 12px;
   text-align: left;
   color: var(--text-mid);
   cursor: pointer;
@@ -493,12 +501,11 @@ input:checked + .switch-slider:before {
 
 .portal-content-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 250px;
   gap: 24px;
-  padding: 24px;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
+  padding: 24px 0 24px 24px;
+  margin-right: 20px;
+  max-width: none;
   align-items: flex-start;
 }
 
@@ -514,6 +521,9 @@ input:checked + .switch-slider:before {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .announcement-card {
@@ -837,13 +847,16 @@ input:checked + .switch-slider:before {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  position: sticky;
+  top: 94px;
 }
 
 .widget {
   background-color: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding:10px;
+  width: 100%;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -1161,9 +1174,10 @@ input:checked + .switch-slider:before {
 
 .sidebar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  position: relative;
 }
 
 .search-bar-container {
@@ -1196,6 +1210,7 @@ input:checked + .switch-slider:before {
   .portal-content-grid {
     grid-template-columns: 1fr;
     padding: 16px;
+    margin-right: 0;
   }
 
   /* Widgets Drawer styling on mobile */
@@ -1260,6 +1275,8 @@ input:checked + .switch-slider:before {
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.2s;
+    position: absolute;
+    right: 0;
   }
 
   .widgets-close-btn:hover {
@@ -1310,6 +1327,7 @@ input:checked + .switch-slider:before {
     border-radius: 8px;
     transition: background-color 0.2s;
   }
+
 
   .mobile-menu-toggle:hover {
     background-color: var(--off-white);
@@ -1401,6 +1419,13 @@ input:checked + .switch-slider:before {
     margin-left: auto;
   }
 
+  .notifications-dropdown {
+    width: calc(100vw - 32px);
+    max-width: 320px;
+    left: -220px;
+    top: 52px;
+  }
+
   .profile-badge-btn {
     padding: 4px 10px 4px 4px;
   }
@@ -1489,9 +1514,10 @@ input:checked + .switch-slider:before {
 
 .sidebar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  position: relative;
 }
 
 .search-bar-container {
@@ -1783,4 +1809,200 @@ input:checked + .switch-slider:before {
   .card-footer {
     padding: 12px 16px;
   }
+}
+
+/* ==================== QUICK LINKS ==================== */
+
+.quick-links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.quick-links-header h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.quick-links-header p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.quick-link-card {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  min-height: 200px;
+}
+
+.quick-link-card:hover {
+  transform: translateY(-4px);
+  border-color: #F2AF00;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.ql-category {
+  font-size: 10px;
+  font-weight: 700;
+  color: #F2AF00;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ql-icon-box {
+  width: 44px;
+  height: 44px;
+  background-color: var(--off-white);
+  color: #0b1c3a;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.2s ease;
+}
+
+.portal-container.dark-theme .ql-icon-box {
+  background-color: var(--surface);
+  color: var(--text-mid);
+}
+
+.quick-link-card:hover .ql-icon-box {
+  background-color: #F2AF00;
+  color: white;
+}
+
+.ql-info h3 {
+  margin: 4px 0 6px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ql-info p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.ql-external-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 12px;
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+/* ==================== PORTAL SERVICES ==================== */
+
+.services-portal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.services-portal-header h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.services-portal-header p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.services-portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.service-portal-card {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.service-portal-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.service-status-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: var(--gold-pale);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.service-icon-wrapper {
+  font-size: 32px;
+  color: var(--navy-mid);
+}
+
+.service-card-info h3 {
+  font-size: 18px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.service-card-info p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.service-action-btn {
+  margin-top: auto;
+  background-color: var(--off-white);
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.service-portal-card:hover .service-action-btn {
+  background-color: var(--gold);
+  color: white;
+  border-color: var(--gold);
 }

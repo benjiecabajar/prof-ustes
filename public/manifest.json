@@ -1,0 +1,28 @@
+{
+  "short_name": "USTeS",
+  "name": "USTeS Student Portal",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "#0f1d3a",
+  "background_color": "#f8f7f4",
+  "description": "Digital platform for Student Affairs and Services at USTP Villanueva.",
+  "orientation": "portrait"
+}

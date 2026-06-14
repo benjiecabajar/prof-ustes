@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/landingPage.css";
 import {
   FaIdCard,
@@ -10,12 +10,15 @@ import {
   FaShieldAlt,
   FaRunning,
   FaPlus,
+  FaDownload,
+  FaEllipsisV,
+  FaShareSquare
 } from "react-icons/fa";
 
 const services = [
   { 
     icon: <FaIdCard />, 
-    title: "Admission", 
+    title: "Admission and Enrollment", 
     description: "Streamline your enrollment process. Submit requirements, track your application status, and get officially admitted to the university digital platform." 
   },
   { 
@@ -59,7 +62,12 @@ const faqs = [
 
 export default function LandingPage() {
   const [open, setOpen] = useState(null);
-  const [expandedServices, setExpandedServices] = useState([]);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [bannerDismissed, setBannerDismissed] = useState(localStorage.getItem("pwaDismissed") === "true");
   const servicesRef = useRef(null);
 
   // Toggles individual service expansion state
@@ -83,33 +91,108 @@ export default function LandingPage() {
     return () => observer.disconnect();
   }, []);
 
-  const scrollToServices = () => {
-    servicesRef.current?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    // Check if the app is running in standalone mode (installed PWA)
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    setIsStandalone(standalone);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+
+    if (!standalone && !bannerDismissed) {
+      setShowInstallBanner(true);
+    }
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle PWA Install Prompt
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      if (!bannerDismissed) {
+        setShowInstallBanner(true);
+      }
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      setShowInstructions(true);
+      return;
+    }
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    setDeferredPrompt(null);
+    setShowInstallBanner(false);
   };
 
-  const toggleService = (index) => {
-    setExpandedServices(prev =>
-      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
-    );
+  const dismissBanner = () => {
+    setShowInstallBanner(false);
+    setBannerDismissed(true);
+    localStorage.setItem("pwaDismissed", "true");
+  };
+
+  const scrollToServices = () => {
+    servicesRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const navigate = useNavigate();
 
   return (
     <div className="landing-page">
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <div className="logo">UST<span>e</span>S</div>
-
-        <div className="nav-buttons">
-          <button className="login-btn" onClick={() => navigate("/login")}>Login
-          </button>
-
-          <button className="signup-btn" onClick={() => navigate("/signup")}>
-            Sign Up
-          </button>
+      {/* PWA INSTALL BANNER */}
+      {showInstallBanner && !isStandalone && (
+        <div className="pwa-install-banner">
+          <div className="pwa-info">
+            <div className="pwa-logo">UST<span>e</span>S</div>
+            <p>{isMobile ? "Add USTeS to your home screen" : "Install our app for a faster experience!"}</p>
+          </div>
+          <div className="pwa-actions">
+            <button 
+              className="pwa-install-btn" 
+              onClick={handleInstallClick}
+              aria-label={isMobile ? "Add to Home Screen" : "Install App"}
+            >
+              <FaDownload /> {isMobile ? "Add to Home Screen" : "Install App"}
+            </button>
+            <button className="pwa-close-btn" onClick={dismissBanner}>&times;</button>
+          </div>
         </div>
-      </nav>
+      )}
+
+      {/* HOW TO INSTALL MODAL (FALLBACK) */}
+      {showInstructions && (
+        <div className="pwa-modal-overlay" onClick={() => setShowInstructions(false)}>
+          <div className="pwa-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="pwa-modal-close" onClick={() => setShowInstructions(false)}>&times;</button>
+            <div className="pwa-modal-icon"><FaDownload /></div>
+            <h3>Add to Home Screen</h3>
+            <p className="pwa-modal-desc">To install USTeS on your device, follow these simple steps:</p>
+            
+            <div className="pwa-steps-list">
+              <div className="pwa-step">
+                <span className="step-count">1</span>
+                <p>Open your browser menu (tap <FaEllipsisV /> or <FaShareSquare />)</p>
+              </div>
+              <div className="pwa-step">
+                <span className="step-count">2</span>
+                <p>Tap <strong>"Add to Home Screen"</strong> or <strong>"Install App"</strong></p>
+              </div>
+            </div>
+            <button className="pwa-got-it" onClick={() => setShowInstructions(false)}>Got it!</button>
+          </div>
+        </div>
+      )}
+
+      {/* PWA FLOATING INSTALL BUTTON */}
+      {isMobile && !showInstallBanner && !isStandalone && (
+        <button className="pwa-floating-btn" onClick={handleInstallClick} aria-label={isMobile ? "Add to Home Screen" : "Install App"}>
+          <FaDownload />
+        </button>
+      )}
 
       {/* HERO */}
       <section className="hero">
@@ -143,20 +226,19 @@ export default function LandingPage() {
       </section>
 
       {/* SERVICES */}
-      <section className="services-section scroll-reveal" ref={servicesRef}>
+      <section id="services" className="services-section scroll-reveal" ref={servicesRef}>
         <h2>Services</h2>
 
         <div className="services-grid">
           {services.map((service, index) => (
             <div
               key={index}
-              className={`service-card ${expandedServices.includes(index) ? "expanded" : ""}`}
-              onClick={() => toggleService(index)}
+              className="service-card"
             >
               <div className="service-icon">{service.icon}</div>
               <h3>{service.title}</h3>
               
-              <div className="service-description-container">
+              <div className="service-description-visible">
                 <div className="service-description">
                   <p>{service.description}</p>
                 </div>
@@ -167,7 +249,7 @@ export default function LandingPage() {
       </section>
 
       {/* UPDATES */}
-      <section className="updates-section scroll-reveal">
+      <section id="updates" className="updates-section scroll-reveal">
         <div className="updates-header">
           <div>
             <h2>Campus Buzz & Updates</h2>
@@ -177,7 +259,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <a href="/">View all updates    →</a>
+          <a href="/login">View all updates    →</a>
         </div>
 
         <div className="updates-grid">
@@ -227,7 +309,7 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="faq-section scroll-reveal">
+      <section id="faq" className="faq-section scroll-reveal">
         <h2>Frequently Asked Questions</h2>
 
         <div className="faq-container">
@@ -280,7 +362,7 @@ export default function LandingPage() {
     <hr className="footer-divider" />
     
     <div className="footer-bottom">
-        <p>© 2024 USTP Villanueva. All rights reserved.</p>
+        <p>© 2026 USTP Villanueva. All rights reserved.</p>
     </div>
     </footer>
     </div>

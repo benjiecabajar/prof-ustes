@@ -1,7 +1,7 @@
 /* ==================== VARIABLES ==================== */
 
 :root {
-  --navy:        #0f1d3a;
+  --navy:        #132342;
   --navy-mid:    #182a5a;
   --navy-light:  #1e3570;
   --gold:        #d4a017;
@@ -25,4 +25,13 @@
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body:    'DM Sans', system-ui, sans-serif;
   --transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Remove default browser blue focus outline and tap highlight on mobile */
+button, 
+a, 
+input[type="button"], 
+input[type="submit"] {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
